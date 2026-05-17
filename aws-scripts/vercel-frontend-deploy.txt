@@ -1,0 +1,30 @@
+# Vercel Frontend Deployment
+
+Since the frontend is built with Next.js, the most robust and simplest way to deploy it is via Vercel.
+
+## Option 1: GitHub Integration (Recommended)
+1. Push your code to a GitHub repository.
+2. Go to https://vercel.com/new
+3. Import your GitHub repository.
+4. Set the Framework Preset to "Next.js".
+5. In the Environment Variables section, add:
+   - `NEXT_PUBLIC_BACKEND_URL` = `https://api.yourdomain.com` (Your AWS EC2 Nginx domain)
+6. Click Deploy.
+
+## Option 2: Vercel CLI
+If you want to deploy directly from your local machine:
+
+1. Install Vercel CLI globally:
+   npm i -g vercel
+
+2. Login to Vercel:
+   vercel login
+
+3. Navigate to the frontend directory:
+   cd frontend
+
+4. Run the deploy command:
+   vercel
+
+5. Follow the prompts. When asked to set up and deploy, type 'Y'.
+6. Add the environment variable for your backend URL in the Vercel project settings later.
