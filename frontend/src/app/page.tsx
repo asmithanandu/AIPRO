@@ -97,7 +97,8 @@ export default function Home() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:3001/api/documents/upload", {
+      // Use relative path so Vercel's proxy catches it
+      const res = await fetch("/api/documents/upload", {
         method: "POST",
         body: formData,
       });

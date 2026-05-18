@@ -23,15 +23,15 @@ services:
       - redisdata:/data
     restart: always
 
-  api:
+  backend:
     build: 
-      context: ../api
+      context: ../backend
       dockerfile: Dockerfile
-    container_name: nexusai-api-prod
+    container_name: nexusai-backend-prod
     ports:
       - "3001:3001"
     env_file:
-      - ../api/.env
+      - ../backend/.env
     depends_on:
       - db
       - redis
@@ -39,12 +39,12 @@ services:
 
   celery_worker:
     build:
-      context: ../api
+      context: ../backend
       dockerfile: Dockerfile
     container_name: nexusai-celery-prod
     command: ["celery", "-A", "celery_worker.celery_app", "worker", "--loglevel=info"]
     env_file:
-      - ../api/.env
+      - ../backend/.env
     depends_on:
       - redis
     restart: always
