@@ -10,8 +10,8 @@ git pull origin main
 
 # 2. Build and restart Docker Compose containers
 echo "Building and restarting Docker containers..."
-sudo docker-compose -f aws-scripts/docker-compose.prod.yml down
-sudo docker-compose -f aws-scripts/docker-compose.prod.yml up --build -d
+sudo docker compose -f aws-scripts/docker-compose.prod.yml down
+sudo docker compose -f aws-scripts/docker-compose.prod.yml up --build -d
 
 echo "Cleaning up dangling images..."
 sudo docker image prune -f
