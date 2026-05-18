@@ -25,9 +25,19 @@ app.add_middleware(
 # Initialize DB tables on startup
 @app.on_event("startup")
 async def startup_event():
-    async with engine.begin() as conn:
-        # Create extension if not exists requires raw sql execution, but we'll assume pgvector is enabled via docker
-        await conn.run_sync(Base.metadata.create_all)
+    import asyncio
+    retries = 5
+    for i in range(retries):
+        try:
+            async with engine.begin() as conn:
+                from sqlalchemy import text
+                await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector;"))
+                await conn.run_sync(Base.metadata.create_all)
+            print("Database connected and initialized.")
+            break
+        except Exception as e:
+            print(f"Database connection failed, retrying in 5s... ({i+1}/{retries}): {e}")
+            await asyncio.sleep(5)
 
 mgr = socketio.AsyncRedisManager(os.getenv("REDIS_URL", "redis://localhost:6379/0"))
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*', client_manager=mgr)
